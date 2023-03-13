@@ -14,23 +14,51 @@ const gravity = 0.7
 
 // Define a Sprite class for creating player and enemy objects
 class Sprite {
-	constructor({ position, velocity }) {
+	constructor({ position, velocity, color = 'red', offset }) {
 		this.position = position
 		this.velocity = velocity
 		this.width = 50
 		this.height = 150
+		this.color = color
 		this.lastKey = ''
+		// attackBox object to store the position and dimensions of the attack area
+		this.attackBox = {
+			position: {
+				x: this.position.x,
+				y: this.position.y
+			},
+			offset,
+			width: 100,
+			height: 50
+		}
+		this.isAttacking
 	}
 
-	// Draw the sprite as a red rectangle
+	// Draw the sprite
 	draw() {
-		c.fillStyle = 'red'
+		// Draw the object
+		c.fillStyle = this.color
 		c.fillRect(this.position.x, this.position.y, this.width, this.height)
+
+		// Draw its attack box if it's attacking
+		if (this.isAttacking) {
+			c.fillStyle = 'green'
+			c.fillRect(
+				this.attackBox.position.x,
+				this.attackBox.position.y,
+        this.attackBox.width,
+        this.attackBox.height
+			)
+		}
 	}
 
 	// Update the sprite's position and velocity
 	update() {
 		this.draw()
+
+		// Update the position of the attack box based on the position of the main object
+		this.attackBox.position.x = this.position.x + this.attackBox.offset.x
+    this.attackBox.position.y = this.position.y
 
 		// Check if sprite is going out of bounds
   	if (this.position.x < 0) {
@@ -50,6 +78,14 @@ class Sprite {
 			this.velocity.y += gravity
 		}
 	}
+
+	// Attack action of the character
+	attack() {
+		this.isAttacking = true
+		setTimeout(() => {
+			this.isAttacking = false
+		}, 100)
+	}
 }
 
 // Create a new player sprite at the top-left corner of the canvas
@@ -59,6 +95,10 @@ const player = new Sprite({
 		y: 0
 	},
 	velocity: {
+		x: 0,
+		y: 0
+	},
+	offset: {
 		x: 0,
 		y: 0
 	}
@@ -73,8 +113,26 @@ const enemy = new Sprite({
 	velocity: {
 		x: 0,
 		y: 0
+	},
+	color: 'blue',
+	offset: {
+		x: -50,
+		y: 0
 	}
 })
+
+// Detect attack collisions between two objects
+function attackCollision({ obj1, obj2 }) {
+	return (
+		obj1.attackBox.position.x + obj1.attackBox.width >=
+      obj2.position.x &&
+    obj1.attackBox.position.x <=
+      obj2.position.x + obj2.width &&
+    obj1.attackBox.position.y + obj1.attackBox.height >=
+      obj2.position.y &&
+    obj1.attackBox.position.y <= obj2.position.y + obj2.height
+	)
+}
 
 // Create an object to keep track of which keys are currently pressed
 const keys = {
@@ -114,6 +172,9 @@ window.addEventListener('keydown', (event) => {
         keys.w.pressed = true
       }
       break
+    case 's':
+    	player.attack()
+    	break
     case 'ArrowRight':
       keys.ArrowRight.pressed = true
       enemy.lastKey = 'ArrowRight'
@@ -128,6 +189,9 @@ window.addEventListener('keydown', (event) => {
         keys.ArrowUp.pressed = true
       }
       break
+     case 'ArrowDown':
+     	enemy.attack()
+     	break
   }
 })
 
@@ -192,6 +256,28 @@ function animate() {
       player.position.x <= enemy.position.x + enemy.width &&
       player.position.y + player.height >= enemy.position.y) {
     console.log('collision!')
+  }
+
+  // Detect for attack collisions
+  if (attackCollision({
+      obj1: player,
+      obj2: enemy
+    }) &&
+    player.isAttacking
+  ) {
+    player.isAttacking = false
+    console.log('player attack successful')
+  }
+
+  if (
+    attackCollision({
+      obj1: enemy,
+      obj2: player
+    }) &&
+    enemy.isAttacking
+  ) {
+    enemy.isAttacking = false
+    console.log('enemy attack successful')
   }
 }
 
