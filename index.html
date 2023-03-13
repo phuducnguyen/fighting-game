@@ -1,3 +1,25 @@
-<canvas></canvas>
-
-<script src="index.js"></script>
+<!DOCTYPE html>
+<html>
+  <head>
+  	<meta charset="UTF-8">
+    <title>Fighting Game</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div id="container">
+      <div id="health-bar">
+        <div id="player-health">
+          <div class="bar"></div>
+          <div class="health" id="playerHealth"></div>
+        </div>
+        <div id="timer"></div>
+        <div id="enemy-health">
+          <div class="bar"></div>
+          <div class="health" id="enemyHealth"></div>
+        </div>
+      </div>
+      <canvas id="canvas"></canvas>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>

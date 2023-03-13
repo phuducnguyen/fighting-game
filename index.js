@@ -20,6 +20,7 @@ class Sprite {
 		this.width = 50
 		this.height = 150
 		this.color = color
+		this.health = 100
 		this.lastKey = ''
 		// attackBox object to store the position and dimensions of the attack area
 		this.attackBox = {
@@ -31,7 +32,7 @@ class Sprite {
 			width: 100,
 			height: 50
 		}
-		this.isAttacking
+		this.isAttacking = false
 	}
 
 	// Draw the sprite
@@ -259,6 +260,7 @@ function animate() {
   }
 
   // Detect for attack collisions
+  // Player attacks Enemy
   if (attackCollision({
       obj1: player,
       obj2: enemy
@@ -266,9 +268,11 @@ function animate() {
     player.isAttacking
   ) {
     player.isAttacking = false
-    console.log('player attack successful')
+    enemy.health -= 20
+    document.querySelector('#enemyHealth').style.width = enemy.health + '%'
   }
 
+  // Enemy attacks Player
   if (
     attackCollision({
       obj1: enemy,
@@ -277,7 +281,8 @@ function animate() {
     enemy.isAttacking
   ) {
     enemy.isAttacking = false
-    console.log('enemy attack successful')
+  	player.health -= 20
+  	document.querySelector('#playerHealth').style.width = player.health + '%'
   }
 }
 
