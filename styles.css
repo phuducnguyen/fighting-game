@@ -59,17 +59,62 @@
   left: 0;
 }
 
-#timer {
-  background-color: red;
-  width: 100px;
-  height: 100px;
-  flex-shrink: 0;
-}
-
 #canvas {
   display: block;
   margin-top: 20px;
   width: 1024px;
   height: 576px;
   background-color: lightgray;
+}
+
+.timer {
+  background-color: #0077be;
+  color: #fff;
+  width: 100px;
+  height: 100px;
+  padding: 20px;
+  border-radius: 10px;
+  border: 5px solid #ccc;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timer__label {
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+}
+
+#displayText {
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+/*  background-color: rgba(0, 0, 0, 0.5);*/
+  color: white;
+  font-size: 4em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+#timer {
+  font-size: 4em;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  background-color: #E74C3C;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
 }
