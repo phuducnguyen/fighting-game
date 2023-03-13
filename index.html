@@ -2,6 +2,7 @@
 <html>
   <head>
   	<meta charset="UTF-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fighting Game</title>
     <link rel="stylesheet" href="styles.css">
   </head>
@@ -12,14 +13,20 @@
           <div class="bar"></div>
           <div class="health" id="playerHealth"></div>
         </div>
-        <div id="timer"></div>
+        <div id="timer" class="timer">
+        	<div class="timer__label">60</div>
+        </div>
         <div id="enemy-health">
           <div class="bar"></div>
           <div class="health" id="enemyHealth"></div>
         </div>
       </div>
+      <div id="displayText"></div>
       <canvas id="canvas"></canvas>
     </div>
-    <script src="index.js"></script>
+
+    <script type="text/javascript" src="js/utils.js"></script>
+    <script type="text/javascript" src="js/classes.js"></script>
+    <script type="text/javascript" src="index.js"></script>
   </body>
 </html>
