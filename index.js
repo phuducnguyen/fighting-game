@@ -80,6 +80,10 @@ const player = new Fighter({
 		attack2: {
 			imageSrc: './img/kenshin/Attack2.png',
 			framesMax: 6
+		},
+		takeHit: {
+			imageSrc: './img/kenshin/Take Hit - white silhouette.png',
+      framesMax: 4
 		}
 	},
 	attackBox: {
@@ -138,6 +142,10 @@ const enemy = new Fighter({
 		attack2: {
 			imageSrc: './img/kenji/Attack2.png',
 			framesMax: 4
+		},
+		takeHit: {
+			imageSrc: './img/kenji/Take hit.png',
+			framesMax: 3
 		}
 	},
 	attackBox: {
@@ -299,15 +307,8 @@ function animate() {
 
 	handleMovement()
 
-	// Collision detection
-  if (player.position.x + player.width >= enemy.position.x &&
-      player.position.x <= enemy.position.x + enemy.width &&
-      player.position.y + player.height >= enemy.position.y) {
-    console.log('collision!')
-  }
-
   // Detect for attack collisions
-  // Player attacks Enemy
+  // Player attacks Enemy && Enemy gets hit
   // Kenshin has more dame and smaller speed
   if (attackCollision({
       obj1: player,
@@ -316,8 +317,8 @@ function animate() {
     player.isAttacking && 
     player.framesCurrent === 4   // Deals damage on slash frames
   ) {
+  	enemy.takeHit()
     player.isAttacking = false
-    enemy.health -= 25
     document.querySelector('#enemyHealth').style.width = enemy.health + '%'
   }
 
@@ -326,7 +327,7 @@ function animate() {
   	player.isAttacking = false
   }
 
-  // Enemy attacks Player
+  // Enemy attacks Player && Player gets hit
   // Kenji has more speed and dame smaller 
   if (
     attackCollision({
@@ -336,8 +337,8 @@ function animate() {
     enemy.isAttacking &&
     enemy.framesCurrent === 2    // Deals damage on slash frames
   ) {
+  	player.takeHit()
     enemy.isAttacking = false
-  	player.health -= 20
   	document.querySelector('#playerHealth').style.width = player.health + '%'
   }
 

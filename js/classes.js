@@ -121,12 +121,13 @@ class Fighter extends Sprite {
 		this.attackBox.position.x = this.position.x + this.attackBox.offset.x
     this.attackBox.position.y = this.position.y + this.attackBox.offset.y
 
-    c.fillRect(
-    	this.attackBox.position.x, 
-    	this.attackBox.position.y, 
-    	this.attackBox.width, 
-    	this.attackBox.height
-    )
+    // Draw the attack box
+    // c.fillRect(
+    // 	this.attackBox.position.x, 
+    // 	this.attackBox.position.y, 
+    // 	this.attackBox.width, 
+    // 	this.attackBox.height
+    // )
 
 		// Check if fighter is going out of bounds
   	if (this.position.x < 0) {
@@ -152,16 +153,26 @@ class Fighter extends Sprite {
 	attack() {
 		this.switchSprite('attack2')
 		this.isAttacking = true
-		setTimeout(() => {
-			this.isAttacking = false
-		}, 100)
+	}
+
+	takeHit() {
+		this.switchSprite('takeHit')
+		this.health -= 20
 	}
 
 	// Switching between our different sprites
 	switchSprite(sprite) {
+		// Overriding all other animations with the attack animation
 		if (
       this.image === this.sprites.attack2.image &&
       this.framesCurrent < this.sprites.attack2.framesMax - 1
+    )
+      return
+
+    // Override when fighter gets hit
+    if (
+      this.image === this.sprites.takeHit.image &&
+      this.framesCurrent < this.sprites.takeHit.framesMax - 1
     )
       return
 
@@ -211,6 +222,13 @@ class Fighter extends Sprite {
 				this.framesCurrent = 0
 			}
 			break
+		case 'takeHit': 
+			if (this.image !== this.sprites.takeHit.image) {
+        this.image = this.sprites.takeHit.image
+        this.framesMax = this.sprites.takeHit.framesMax
+        this.framesCurrent = 0
+      }
+      break
 		}
 	}
 }
