@@ -133,17 +133,36 @@ body {
   z-index: 10;
 }
 
-#button {
-  background-color: #0077be;
-  border: none;
-  color: #fff;
+#tutorial {
+  position: absolute;
+  color: white;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.75);
+}
+
+#beginButton {
   padding: 16px 26px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 7px;
+  border-radius: 0;
+  background: white;
+  border: black 3px solid;
+  color: black;
   cursor: pointer;
-  box-shadow: 2px 2px 2px #ccc;
+}
+
+#startButton {
+  padding: 16px 26px;
+  border-radius: 0;
+  background: white;
+  border: black 3px solid;
+  color: black;
+  cursor: pointer;
+  position: absolute;
+  bottom: 100px;
 }

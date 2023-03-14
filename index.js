@@ -315,10 +315,15 @@ function animate() {
 // Start the animation loop
 animate()
 
-// Button to Start Game
+// Introduce to the GAME
+document.querySelector('#beginButton').addEventListener('click', () => {
+  document.querySelector('#beginButton').style.display = 'none'
+  document.querySelector('#tutorial').style.display = 'flex'
+})
+
 document.querySelector('#startButton').addEventListener('click', () => {
   decreaseTimer()
-  document.querySelector('#startButton').style.display = 'none'
+  document.querySelector('#tutorial').style.display = 'none'
   game.started = true
 })
 
@@ -341,7 +346,7 @@ window.addEventListener('keydown', (event) => {
         keys.w.pressed = true
       }
       break
-    case 's':
+    case ' ':
     	player.attack()
     	break
   	}

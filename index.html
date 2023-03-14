@@ -11,24 +11,37 @@
           rel="stylesheet"/>
   </head>
   <body>
+    <!-- Main container -->
     <div id="container">
       <div id="health-bar">
+        
         <div id="player-health">
           <div class="bar"></div>
           <div class="health" id="playerHealth"></div>
         </div>
+
         <div id="timer" class="timer">
         	<div class="timer__label">60</div>
         </div>
+        
         <div id="enemy-health">
           <div class="bar"></div>
           <div class="health" id="enemyHealth"></div>
         </div>
+      
       </div>
+      
       <div id="displayText"></div>
+      
       <canvas id="canvas"></canvas>
+      
       <div id="menu">
-        <button id="startButton">Start Game</button>
+        <button id="beginButton">Begin</button>
+      </div>
+
+      <div id="tutorial">
+        <img src="./img/howToPlay.png" alt="" />
+        <button id="startButton">Start</button>
       </div>
     </div>
 
@@ -36,8 +49,7 @@
       src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"
       integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ=="
       crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
+      referrerpolicy="no-referrer"></script>
     <script type="text/javascript" src="js/utils.js"></script>
     <script type="text/javascript" src="js/classes.js"></script>
     <script type="text/javascript" src="index.js"></script>
