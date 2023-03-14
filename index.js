@@ -38,7 +38,7 @@ const shop = new Sprite({
 // Create a new player fighter at the top-left corner of the canvas
 const player = new Fighter({
 	position: {
-		x: 0,
+		x: 79,
 		y: 0
 	},
 	velocity: {
@@ -76,6 +76,10 @@ const player = new Fighter({
 		attack1: {
 			imageSrc: './img/kenshin/Attack1.png',
 			framesMax: 6
+		},
+		attack2: {
+			imageSrc: './img/kenshin/Attack2.png',
+			framesMax: 6
 		}
 	}
 })
@@ -83,7 +87,7 @@ const player = new Fighter({
 // Create a new enemy fighter at the top-right corner of the canvas
 const enemy = new Fighter({
 	position: {
-		x: canvas.width - 50,
+		x: canvas.width - 150,
 		y: 0
 	},
 	velocity: {
@@ -94,6 +98,39 @@ const enemy = new Fighter({
 	offset: {
 		x: -50,
 		y: 0
+	},
+	imageSrc: './img/kenji/Idle.png',
+	framesMax: 8,
+	scale: 2.5,
+	offset: {
+		x: 215,
+		y: 169
+	},
+	sprites: {
+		idle: {
+			imageSrc: './img/kenji/Idle.png',
+			framesMax: 4
+		},
+		run: {
+			imageSrc: './img/kenji/Run.png',
+			framesMax: 8
+		},
+		jump: {
+			imageSrc: './img/kenji/Jump.png',
+			framesMax: 2
+		},
+		fall: {
+			imageSrc: './img/kenji/Fall.png',
+			framesMax: 2
+		},
+		attack1: {
+			imageSrc: './img/kenji/Attack1.png',
+			framesMax: 4
+		},
+		attack2: {
+			imageSrc: './img/kenji/Attack2.png',
+			framesMax: 4
+		}
 	}
 })
 
@@ -120,7 +157,7 @@ const keys = {
 }
 
 window.addEventListener('keydown', (event) => {
-  console.log(event.key)
+  // console.log(event.key)
   switch (event.key) {
     case 'd':
       keys.d.pressed = true
@@ -149,12 +186,12 @@ window.addEventListener('keydown', (event) => {
       enemy.lastKey = 'ArrowLeft'
       break
     case 'ArrowUp':
-      if (!keys.ArrowUp.pressed && enemy.position.y + enemy.height >= canvas.height) {
-        keys.ArrowUp.pressed = true
+      if (!keys.ArrowUp.pressed && enemy.position.y >= (groundHeight - enemy.height)) {
         enemy.velocity.y = -20
+        keys.ArrowUp.pressed = true
       }
       break
-     case 'ArrowDown':
+    case 'ArrowDown':
      	enemy.attack()
      	break
   }
@@ -196,7 +233,7 @@ function handleMovement() {
     player.switchSprite('idle')
   }
 
-  // Jumping
+  // Player - Jumping & Falling
   if (keys.w.pressed && player.position.y >= (groundHeight - player.height)) {
   	player.switchSprite('jump')
   } else if (player.velocity.y > 0) {
@@ -206,10 +243,20 @@ function handleMovement() {
   // Enemy movement
   if (keys.ArrowLeft.pressed) {
     enemy.velocity.x = -10
+    enemy.switchSprite('run')
   } else if (keys.ArrowRight.pressed) {
     enemy.velocity.x = 10
+    enemy.switchSprite('run')
   } else {
     enemy.velocity.x = 0
+    enemy.switchSprite('idle')
+  }
+
+  // Enemy - Jumping & Falling
+  if (keys.ArrowUp.pressed && enemy.position.y >= (groundHeight - enemy.height)) {
+  	enemy.switchSprite('jump')
+  } else if (enemy.velocity.y > 0) {
+  	enemy.switchSprite('fall')
   }
 }
 
@@ -232,7 +279,7 @@ function animate() {
 
 	// Update and draw the player and enemy sprites
 	player.update()
-	// enemy.update()
+	enemy.update()
 
 	handleMovement()
 

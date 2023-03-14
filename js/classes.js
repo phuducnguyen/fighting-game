@@ -142,7 +142,7 @@ class Fighter extends Sprite {
 
 	// Attack action of the character
 	attack() {
-		this.switchSprite('attack1')
+		this.switchSprite('attack2')
 		this.isAttacking = true
 		setTimeout(() => {
 			this.isAttacking = false
@@ -152,10 +152,10 @@ class Fighter extends Sprite {
 	// Switching between our different sprites
 	switchSprite(sprite) {
 		if (
-			this.image === this.sprites.attack1.image && 
-			this.framesCurrent < this.sprites.attack1.framesMax - 1
-		) 
-			return
+      this.image === this.sprites.attack2.image &&
+      this.framesCurrent < this.sprites.attack2.framesMax - 1
+    )
+      return
 
 		switch (sprite) {
 		case 'idle':
@@ -193,6 +193,13 @@ class Fighter extends Sprite {
 			if (this.image != this.sprites.attack1.image) {
 				this.image = this.sprites.attack1.image
 				this.framesMax = this.sprites.attack1.framesMax
+				this.framesCurrent = 0
+			}
+			break
+		case 'attack2':
+			if (this.image != this.sprites.attack2.image) {
+				this.image = this.sprites.attack2.image
+				this.framesMax = this.sprites.attack2.framesMax
 				this.framesCurrent = 0
 			}
 			break
