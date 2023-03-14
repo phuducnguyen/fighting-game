@@ -305,7 +305,7 @@ decreaseTimer()
 // Define the animation loop
 function animate() {
 	// Request the next animation frame
-	requestAnimationFrame(animate)
+	window.requestAnimationFrame(animate)
 
 	// Clear the canvas with a black background
 	c.fillStyle = 'black'
@@ -316,6 +316,10 @@ function animate() {
 
 	// Draw the shop sprite
 	shop.update()
+
+	// Upgrade contrast for display environment
+	c.fillStyle = 'rgba(255, 255, 255, 0.15)'
+	c.fillRect(0, 0, canvas.width, canvas.height)
 
 	// Update and draw the player and enemy sprites
 	player.update()
@@ -335,7 +339,10 @@ function animate() {
   ) {
   	enemy.takeHit()
     player.isAttacking = false
-    document.querySelector('#enemyHealth').style.width = enemy.health + '%'
+
+    gsap.to('#enemyHealth', {
+    	width: enemy.health + '%'
+    })
   }
 
   // If Player misses damage
@@ -355,7 +362,10 @@ function animate() {
   ) {
   	player.takeHit()
     enemy.isAttacking = false
-  	document.querySelector('#playerHealth').style.width = player.health + '%'
+    
+  	gsap.to('#playerHealth', {
+      width: player.health + '%'
+    })
   }
 
   // If Enemy misses damage

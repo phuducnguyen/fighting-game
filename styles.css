@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  font-family: 'Press Start 2P', cursive;
 }
 
 #container {
@@ -12,7 +13,7 @@
   display: flex;
   width: 100%;
   align-items: center;
-  padding: 20px;
+  padding: 40px;
 }
 
 #player-health {
@@ -21,17 +22,20 @@
   width: 100%;
   display: flex;
   justify-content: flex-end;
+  border-top: 4px solid white;
+  border-left: 4px solid white;
+  border-bottom: 4px solid white;
 }
 
 #player-health .bar {
-  background-color: yellow;
+  background-color: #dc2626;
   height: 100%;
   width: 100%;
 }
 
 #player-health .health {
   position: absolute;
-  background: blue;
+  background: #fde047;
   top: 0;
   right: 0;
   bottom: 0;
@@ -42,17 +46,20 @@
   position: relative;
   height: 30px;
   width: 100%;
+  border-top: 4px solid white;
+  border-bottom: 4px solid white;
+  border-right: 4px solid white;
 }
 
 #enemy-health .bar {
-  background-color: yellow;
+  background-color: #dc2626;
   height: 100%;
   width: 100%;
 }
 
 #enemy-health .health {
   position: absolute;
-  background: blue;
+  background: #fde047;
   top: 0;
   right: 0;
   bottom: 0;
@@ -65,20 +72,6 @@
   width: 1024px;
   height: 576px;
   background-color: lightgray;
-}
-
-.timer {
-  background-color: #0077be;
-  color: #fff;
-  width: 100px;
-  height: 100px;
-  padding: 20px;
-  border-radius: 10px;
-  border: 5px solid #ccc;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .timer__label {
@@ -96,7 +89,7 @@
   right: 0;
 /*  background-color: rgba(0, 0, 0, 0.5);*/
   color: white;
-  font-size: 4em;
+  font-size: 3em;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -106,15 +99,15 @@
 }
 
 #timer {
-  font-size: 4em;
-  font-weight: bold;
-  color: white;
+  font
   text-align: center;
-  background-color: #E74C3C;
+  background-color: black;
   width: 100px;
-  height: 100px;
+  height: 50px;
   display: flex;
+  flex-shrink: 0;
   justify-content: center;
   align-items: center;
-  border-radius: 50%;
+  color: white;
+  border: 4px solid white;
 }
