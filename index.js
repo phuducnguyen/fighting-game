@@ -72,6 +72,10 @@ const player = new Fighter({
 		fall: {
 			imageSrc: './img/kenshin/Fall.png',
 			framesMax: 2
+		},
+		attack1: {
+			imageSrc: './img/kenshin/Attack1.png',
+			framesMax: 6
 		}
 	}
 })
