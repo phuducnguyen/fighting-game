@@ -81,6 +81,14 @@ const player = new Fighter({
 			imageSrc: './img/kenshin/Attack2.png',
 			framesMax: 6
 		}
+	},
+	attackBox: {
+		offset: {
+			x: 100,
+			y: 50
+		},
+		width: 160,
+		height: 50
 	}
 })
 
@@ -131,6 +139,14 @@ const enemy = new Fighter({
 			imageSrc: './img/kenji/Attack2.png',
 			framesMax: 4
 		}
+	},
+	attackBox: {
+		offset: {
+			x: -170,
+			y: 50
+		},
+		width: 170,
+		height: 50
 	}
 })
 
@@ -292,28 +308,42 @@ function animate() {
 
   // Detect for attack collisions
   // Player attacks Enemy
+  // Kenshin has more dame and smaller speed
   if (attackCollision({
       obj1: player,
       obj2: enemy
     }) &&
-    player.isAttacking
+    player.isAttacking && 
+    player.framesCurrent === 4   // Deals damage on slash frames
   ) {
     player.isAttacking = false
-    enemy.health -= 20
+    enemy.health -= 25
     document.querySelector('#enemyHealth').style.width = enemy.health + '%'
   }
 
+  // If Player misses damage
+  if (player.isAttacking && player.framesCurrent === 4) {
+  	player.isAttacking = false
+  }
+
   // Enemy attacks Player
+  // Kenji has more speed and dame smaller 
   if (
     attackCollision({
       obj1: enemy,
       obj2: player
     }) &&
-    enemy.isAttacking
+    enemy.isAttacking &&
+    enemy.framesCurrent === 2    // Deals damage on slash frames
   ) {
     enemy.isAttacking = false
   	player.health -= 20
   	document.querySelector('#playerHealth').style.width = player.health + '%'
+  }
+
+  // If Enemy misses damage
+  if (enemy.isAttacking && enemy.framesCurrent === 2) {
+  	enemy.isAttacking = false
   }
 
   // Endgame based on health
