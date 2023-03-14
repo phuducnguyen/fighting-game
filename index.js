@@ -52,6 +52,16 @@ const player = new Fighter({
 	offset: {
 		x: 215,
 		y: 157
+	},
+	sprites: {
+		idle: {
+			imageSrc: './img/kenshin/Idle.png',
+			framesMax: 8
+		},
+		run: {
+			imageSrc: './img/kenshin/Run.png',
+			framesMax: 8
+		}
 	}
 })
 
@@ -157,14 +167,19 @@ window.addEventListener('keyup', (event) => {
 })
 
 function handleMovement() {
+	// Player movement
   if (keys.a.pressed) {
     player.velocity.x = -10
+    player.image = player.sprites.run.image
   } else if (keys.d.pressed) {
     player.velocity.x = 10
+    player.image = player.sprites.run.image
   } else {
     player.velocity.x = 0
+    player.image = player.sprites.idle.image
   }
 
+  // Enemy movement
   if (keys.ArrowLeft.pressed) {
     enemy.velocity.x = -10
   } else if (keys.ArrowRight.pressed) {
@@ -173,6 +188,8 @@ function handleMovement() {
     enemy.velocity.x = 0
   }
 }
+
+decreaseTimer()
 
 // Define the animation loop
 function animate() {
@@ -237,4 +254,4 @@ function animate() {
 
 // Start the animation loop
 animate()
-decreaseTimer()
+
