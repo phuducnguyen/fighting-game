@@ -45,6 +45,13 @@ const player = new Fighter({
 	offset: {
 		x: 0,
 		y: 0
+	},
+	imageSrc: './img/kenshin/Idle.png',
+	framesMax: 8,
+	scale: 2.5,
+	offset: {
+		x: 215,
+		y: 157
 	}
 })
 
@@ -182,11 +189,12 @@ function animate() {
 	// Draw the shop sprite
 	shop.update()
 
-	handleMovement()
 
 	// Update and draw the player and enemy sprites
 	player.update()
-	enemy.update()
+	// enemy.update()
+
+	handleMovement()
 
 	// Collision detection
   if (player.position.x + player.width >= enemy.position.x &&

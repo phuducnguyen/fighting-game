@@ -1,7 +1,7 @@
 // The Sprite class represents an image that can be drawn to a canvas
 class Sprite {
 	// Constructor function that sets up the properties of the Sprite object
-	constructor({ position, imageSrc, scale = 1, framesMax = 1 }) {
+	constructor({ position, imageSrc, scale = 1, framesMax = 1, offset = { x: 0, y: 0 } }) {
 		// The position of the sprite on the canvas
 		this.position = position;
 
@@ -27,6 +27,8 @@ class Sprite {
 
 		// The number of frames to hold each frame of the animation
 		this.framesHold = 5;
+
+		this.offset = offset;
 	}
 
 	// Draws the sprite to the canvas
@@ -40,32 +42,50 @@ class Sprite {
 			0,
 			frameWidth,
 			image.height, 
-			x, 
-			y, 
+			x - this.offset.x, 
+			y - this.offset.y, 
 			frameWidth * this.scale, 
 			image.height * this.scale
 		)
 	}
 
-	// Updates the sprite's animation
-	update() {
-		this.draw();
+	animateFrames() {
 		this.framesElapsed++;
 		if (this.framesElapsed % this.framesHold === 0) {
 			// using the modulus operator to cycle through the animation frames
 			this.framesCurrent = (this.framesCurrent + 1) % this.framesMax;
 		}
 	}
+
+	// Updates the sprite's animation
+	update() {
+		this.draw();
+		this.animateFrames();
+	}
 }
 
-// Define a Fighter class for creating player1 and player2 objects
-class Fighter {
-	constructor({ position, velocity, color = 'red', offset }) {
-		this.position = position
+// Define a Fighter class for creating characters
+class Fighter extends Sprite {
+	constructor({ 
+		position, 
+		velocity, 
+		color = 'red', 
+		imageSrc, 
+		scale = 1, 
+		framesMax = 1,
+		offset = { x: 0, y: 0 }
+	}) {
+		super({ 
+			position, 
+			imageSrc, 
+			scale, 
+			framesMax,
+			offset
+		})
 		this.velocity = velocity
+		this.color = color
 		this.width = 50
 		this.height = 150
-		this.color = color
 		this.health = 100
 		this.lastKey = ''
 		// attackBox object to store the position and dimensions of the attack area
@@ -78,30 +98,34 @@ class Fighter {
 			width: 100,
 			height: 50
 		}
-		this.isAttacking = false
+		this.isAttacking
+		this.framesCurrent = 0;
+		this.framesElapsed = 0;
+		this.framesHold = 5;
 	}
 
-	// Draw the fighter
-	draw() {
-		// Draw the object
-		c.fillStyle = this.color
-		c.fillRect(this.position.x, this.position.y, this.width, this.height)
+	// // Draw the fighter
+	// draw() {
+	// 	// Draw the object
+	// 	c.fillStyle = this.color
+	// 	c.fillRect(this.position.x, this.position.y, this.width, this.height)
 
-		// Draw its attack box if it's attacking
-		if (this.isAttacking) {
-			c.fillStyle = 'green'
-			c.fillRect(
-				this.attackBox.position.x,
-				this.attackBox.position.y,
-        this.attackBox.width,
-        this.attackBox.height
-			)
-		}
-	}
+	// 	// Draw its attack box if it's attacking
+	// 	if (this.isAttacking) {
+	// 		c.fillStyle = 'green'
+	// 		c.fillRect(
+	// 			this.attackBox.position.x,
+	// 			this.attackBox.position.y,
+  //       this.attackBox.width,
+  //       this.attackBox.height
+	// 		)
+	// 	}
+	// }
 
 	// Update the fighter's position and velocity
 	update() {
 		this.draw()
+		this.animateFrames()
 
 		// Update the position of the attack box based on the position of the main object
 		this.attackBox.position.x = this.position.x + this.attackBox.offset.x
