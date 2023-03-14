@@ -12,13 +12,25 @@ c.fillRect(0, 0, canvas.width, canvas.height)
 // Set the gravity constant for all sprites
 const gravity = 0.7
 
+// // Creating a sprite object for the background image
 const background = new Sprite({
 	position: {
 		x: 0,
 		y: 0
 	},
 	imageSrc: './img/background.png'
-})
+});
+
+// Creating a sprite object for the shop image
+const shop = new Sprite({
+	position: {
+		x: 600,
+		y: 128
+	},
+	imageSrc: './img/shop.png',
+	scale: 2.75,
+	framesMax: 6
+});
 
 // Create a new player fighter at the top-left corner of the canvas
 const player = new Fighter({
@@ -52,8 +64,6 @@ const enemy = new Fighter({
 		y: 0
 	}
 })
-
-decreaseTimer()
 
 // Create an object to keep track of which keys are currently pressed
 const keys = {
@@ -160,14 +170,17 @@ function handleMovement() {
 // Define the animation loop
 function animate() {
 	// Request the next animation frame
-	window.requestAnimationFrame(animate)
+	requestAnimationFrame(animate)
 
 	// Clear the canvas with a black background
 	c.fillStyle = 'black'
 	c.fillRect(0, 0, canvas.width, canvas.height)
 
-	// Draw background image
+	// Draw the background
 	background.update()
+
+	// Draw the shop sprite
+	shop.update()
 
 	handleMovement()
 
@@ -216,3 +229,4 @@ function animate() {
 
 // Start the animation loop
 animate()
+decreaseTimer()

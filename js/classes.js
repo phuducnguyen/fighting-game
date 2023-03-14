@@ -1,20 +1,60 @@
-// Define a Sprite class for creating image fighter
+// The Sprite class represents an image that can be drawn to a canvas
 class Sprite {
-	constructor({ position, imageSrc }) {
-		this.position = position
-		this.width = 50
-		this.height = 150
-		this.image = new Image()
-		this.image.src = imageSrc
+	// Constructor function that sets up the properties of the Sprite object
+	constructor({ position, imageSrc, scale = 1, framesMax = 1 }) {
+		// The position of the sprite on the canvas
+		this.position = position;
+
+		// The width and height of the sprite
+		this.width = 50;
+		this.height = 150;
+
+		// The image object that will be drawn to the canvas
+		this.image = new Image();
+		this.image.src = imageSrc;
+
+		// The scale of the sprite (default is 1)
+		this.scale = scale;
+
+		// The number of frames in the sprite's animation
+		this.framesMax = framesMax;
+
+		// The current frame of the sprite's animation
+		this.framesCurrent = 0;
+
+		// The number of frames that have elapsed since the last frame change
+		this.framesElapsed = 0;
+
+		// The number of frames to hold each frame of the animation
+		this.framesHold = 5;
 	}
 
+	// Draws the sprite to the canvas
 	draw() {
-		c.drawImage(this.image, this.position.x, this.position.y)
-
+		const { x, y } = this.position;
+		const { width, height, framesMax, framesCurrent, image } = this;
+		const frameWidth = this.image.width / this.framesMax;
+		c.drawImage(
+			image,
+			framesCurrent * frameWidth,
+			0,
+			frameWidth,
+			image.height, 
+			x, 
+			y, 
+			frameWidth * this.scale, 
+			image.height * this.scale
+		)
 	}
 
+	// Updates the sprite's animation
 	update() {
-		this.draw()
+		this.draw();
+		this.framesElapsed++;
+		if (this.framesElapsed % this.framesHold === 0) {
+			// using the modulus operator to cycle through the animation frames
+			this.framesCurrent = (this.framesCurrent + 1) % this.framesMax;
+		}
 	}
 }
 
