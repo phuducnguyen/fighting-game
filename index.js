@@ -188,6 +188,140 @@ const keys = {
   }
 }
 
+function handleMovement() {
+	// Player movement
+  if (keys.a.pressed) {
+    player.velocity.x = -10
+    player.switchSprite('run')
+  } else if (keys.d.pressed) {
+    player.velocity.x = 10
+    player.switchSprite('run')
+  } else {
+    player.velocity.x = 0
+    player.switchSprite('idle')
+  }
+
+  // Player - Jumping & Falling
+  if (keys.w.pressed && player.position.y >= (groundHeight - player.height)) {
+  	player.switchSprite('jump')
+  } else if (player.velocity.y > 0) {
+  	player.switchSprite('fall')
+  }
+
+  // Enemy movement
+  if (keys.ArrowLeft.pressed) {
+    enemy.velocity.x = -10
+    enemy.switchSprite('run')
+  } else if (keys.ArrowRight.pressed) {
+    enemy.velocity.x = 10
+    enemy.switchSprite('run')
+  } else {
+    enemy.velocity.x = 0
+    enemy.switchSprite('idle')
+  }
+
+  // Enemy - Jumping & Falling
+  if (keys.ArrowUp.pressed && enemy.position.y >= (groundHeight - enemy.height)) {
+  	enemy.switchSprite('jump')
+  } else if (enemy.velocity.y > 0) {
+  	enemy.switchSprite('fall')
+  }
+}
+
+const game = {
+	started: false
+}
+
+// Define the animation loop
+function animate() {
+	// Request the next animation frame
+	window.requestAnimationFrame(animate)
+
+	// Clear the canvas with a black background
+	c.fillStyle = 'black'
+	c.fillRect(0, 0, canvas.width, canvas.height)
+
+	// Draw the background
+	background.update()
+
+	// Draw the shop sprite
+	shop.update()
+
+	// Upgrade contrast for display environment
+	c.fillStyle = 'rgba(255, 255, 255, 0.15)'
+	c.fillRect(0, 0, canvas.width, canvas.height)
+
+	// Start Game
+	if (!game.started) return
+
+	// Update and draw the player and enemy sprites
+	player.update()
+	enemy.update()
+
+	handleMovement()
+
+  // Detect for attack collisions
+  // Player attacks Enemy && Enemy gets hit
+  // Kenshin has more dame and smaller speed
+  if (attackCollision({
+      obj1: player,
+      obj2: enemy
+    }) &&
+    player.isAttacking && 
+    player.framesCurrent === 4   // Deals damage on slash frames
+  ) {
+  	enemy.takeHit()
+    player.isAttacking = false
+
+    gsap.to('#enemyHealth', {
+    	width: enemy.health + '%'
+    })
+  }
+
+  // If Player misses damage
+  if (player.isAttacking && player.framesCurrent === 4) {
+  	player.isAttacking = false
+  }
+
+  // Enemy attacks Player && Player gets hit
+  // Kenji has more speed and dame smaller 
+  if (
+    attackCollision({
+      obj1: enemy,
+      obj2: player
+    }) &&
+    enemy.isAttacking &&
+    enemy.framesCurrent === 2    // Deals damage on slash frames
+  ) {
+  	player.takeHit()
+    enemy.isAttacking = false
+    
+  	gsap.to('#playerHealth', {
+      width: player.health + '%'
+    })
+  }
+
+  // If Enemy misses damage
+  if (enemy.isAttacking && enemy.framesCurrent === 2) {
+  	enemy.isAttacking = false
+  }
+
+  // Endgame based on health
+  if (enemy.health <= 0 || player.health <= 0) {
+    determineWinner({ player, enemy, timerId })
+  }
+}
+
+// Start the animation loop
+animate()
+
+// Button to Start Game
+document.querySelector('#startButton').addEventListener('click', () => {
+  decreaseTimer()
+  document.querySelector('#startButton').style.display = 'none'
+  game.started = true
+})
+
 window.addEventListener('keydown', (event) => {
   // Controller for Player
   if (!player.dead) {
@@ -259,126 +393,3 @@ window.addEventListener('keyup', (event) => {
       break
   }
 })
-
-function handleMovement() {
-	// Player movement
-  if (keys.a.pressed) {
-    player.velocity.x = -10
-    player.switchSprite('run')
-  } else if (keys.d.pressed) {
-    player.velocity.x = 10
-    player.switchSprite('run')
-  } else {
-    player.velocity.x = 0
-    player.switchSprite('idle')
-  }
-
-  // Player - Jumping & Falling
-  if (keys.w.pressed && player.position.y >= (groundHeight - player.height)) {
-  	player.switchSprite('jump')
-  } else if (player.velocity.y > 0) {
-  	player.switchSprite('fall')
-  }
-
-  // Enemy movement
-  if (keys.ArrowLeft.pressed) {
-    enemy.velocity.x = -10
-    enemy.switchSprite('run')
-  } else if (keys.ArrowRight.pressed) {
-    enemy.velocity.x = 10
-    enemy.switchSprite('run')
-  } else {
-    enemy.velocity.x = 0
-    enemy.switchSprite('idle')
-  }
-
-  // Enemy - Jumping & Falling
-  if (keys.ArrowUp.pressed && enemy.position.y >= (groundHeight - enemy.height)) {
-  	enemy.switchSprite('jump')
-  } else if (enemy.velocity.y > 0) {
-  	enemy.switchSprite('fall')
-  }
-}
-
-decreaseTimer()
-
-// Define the animation loop
-function animate() {
-	// Request the next animation frame
-	window.requestAnimationFrame(animate)
-
-	// Clear the canvas with a black background
-	c.fillStyle = 'black'
-	c.fillRect(0, 0, canvas.width, canvas.height)
-
-	// Draw the background
-	background.update()
-
-	// Draw the shop sprite
-	shop.update()
-
-	// Upgrade contrast for display environment
-	c.fillStyle = 'rgba(255, 255, 255, 0.15)'
-	c.fillRect(0, 0, canvas.width, canvas.height)
-
-	// Update and draw the player and enemy sprites
-	player.update()
-	enemy.update()
-
-	handleMovement()
-
-  // Detect for attack collisions
-  // Player attacks Enemy && Enemy gets hit
-  // Kenshin has more dame and smaller speed
-  if (attackCollision({
-      obj1: player,
-      obj2: enemy
-    }) &&
-    player.isAttacking && 
-    player.framesCurrent === 4   // Deals damage on slash frames
-  ) {
-  	enemy.takeHit()
-    player.isAttacking = false
-
-    gsap.to('#enemyHealth', {
-    	width: enemy.health + '%'
-    })
-  }
-
-  // If Player misses damage
-  if (player.isAttacking && player.framesCurrent === 4) {
-  	player.isAttacking = false
-  }
-
-  // Enemy attacks Player && Player gets hit
-  // Kenji has more speed and dame smaller 
-  if (
-    attackCollision({
-      obj1: enemy,
-      obj2: player
-    }) &&
-    enemy.isAttacking &&
-    enemy.framesCurrent === 2    // Deals damage on slash frames
-  ) {
-  	player.takeHit()
-    enemy.isAttacking = false
-    
-  	gsap.to('#playerHealth', {
-      width: player.health + '%'
-    })
-  }
-
-  // If Enemy misses damage
-  if (enemy.isAttacking && enemy.framesCurrent === 2) {
-  	enemy.isAttacking = false
-  }
-
-  // Endgame based on health
-  if (enemy.health <= 0 || player.health <= 0) {
-    determineWinner({ player, enemy, timerId })
-  }
-}
-
-// Start the animation loop
-animate()
-
