@@ -35,7 +35,7 @@ const shop = new Sprite({
 	framesMax: 6
 });
 
-// Create a new player fighter at the top-left corner of the canvas
+// Create a new player fighter
 const player = new Fighter({
 	position: {
 		x: 79,
@@ -100,11 +100,11 @@ const player = new Fighter({
 	}
 })
 
-// Create a new enemy fighter at the top-right corner of the canvas
+// Create a new enemy fighter
 const enemy = new Fighter({
 	position: {
 		x: canvas.width - 150,
-		y: 0
+		y: 100
 	},
 	velocity: {
 		x: 0,
