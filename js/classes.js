@@ -103,14 +103,12 @@ class Fighter extends Sprite {
 		this.framesCurrent = 0;
 		this.framesElapsed = 0;
 		this.framesHold = 5;
-		this.sprites = sprites;
+		this.sprites = sprites;		// this Object contain all sprite animations
 
 		for (const sprite in this.sprites) {
 			sprites[sprite].image = new Image();
 			sprites[sprite].image.src = sprites[sprite].imageSrc;
 		}
-
-		console.log(this.sprites);
 	}
 
 	// Update the fighter's position and velocity
@@ -136,6 +134,7 @@ class Fighter extends Sprite {
 		// Prevent fighter from falling through the ground
 		if (this.position.y + this.height + this.velocity.y >= canvas.height - 96) {
 			this.velocity.y = 0
+			this.position.y = 330		// Ground Height
 		} else {
 			this.velocity.y += gravity
 		}
@@ -147,5 +146,42 @@ class Fighter extends Sprite {
 		setTimeout(() => {
 			this.isAttacking = false
 		}, 100)
+	}
+
+	// Switching between our different sprites
+	switchSprite(sprite) {
+		switch (sprite) {
+		case 'idle':
+			if (this.image != this.sprites.idle.image) {
+				this.image = this.sprites.idle.image
+				this.framesMax = this.sprites.idle.framesMax
+				
+				// Resets the current framto 0 whenever the sprite is changed
+				// ensuring that the animation starts from the beginning each time
+				this.framesCurrent = 0 	
+			}
+			break
+		case 'run':
+			if (this.image != this.sprites.run.image) {
+				this.image = this.sprites.run.image
+				this.framesMax = this.sprites.run.framesMax
+				this.framesCurrent = 0
+			}
+			break
+		case 'jump':
+			if (this.image != this.sprites.jump.image) {
+				this.image = this.sprites.jump.image
+				this.framesMax = this.sprites.jump.framesMax
+				this.framesCurrent = 0
+			}
+			break
+		case 'fall':
+			if (this.image != this.sprites.fall.image) {
+				this.image = this.sprites.fall.image
+				this.framesMax = this.sprites.fall.framesMax
+				this.framesCurrent = 0
+			}
+			break
+		}
 	}
 }

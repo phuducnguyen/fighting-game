@@ -12,6 +12,9 @@ c.fillRect(0, 0, canvas.width, canvas.height)
 // Set the gravity constant for all sprites
 const gravity = 0.7
 
+// Track of the ground level
+const groundHeight = canvas.height - 96
+
 // // Creating a sprite object for the background image
 const background = new Sprite({
 	position: {
@@ -61,6 +64,14 @@ const player = new Fighter({
 		run: {
 			imageSrc: './img/kenshin/Run.png',
 			framesMax: 8
+		},
+		jump: {
+			imageSrc: './img/kenshin/Jump.png',
+			framesMax: 2
+		},
+		fall: {
+			imageSrc: './img/kenshin/Fall.png',
+			framesMax: 2
 		}
 	}
 })
@@ -105,6 +116,7 @@ const keys = {
 }
 
 window.addEventListener('keydown', (event) => {
+  console.log(event.key)
   switch (event.key) {
     case 'd':
       keys.d.pressed = true
@@ -115,7 +127,8 @@ window.addEventListener('keydown', (event) => {
       player.lastKey = 'a'
       break
     case 'w':
-      if (!keys.w.pressed && player.position.y + player.height >= canvas.height) {
+      if (!keys.w.pressed && player.position.y >= (groundHeight - player.height)) {
+        // Set the player's vertical velocity to a negative value to simulate a jump
         player.velocity.y = -20
         keys.w.pressed = true
       }
@@ -133,8 +146,8 @@ window.addEventListener('keydown', (event) => {
       break
     case 'ArrowUp':
       if (!keys.ArrowUp.pressed && enemy.position.y + enemy.height >= canvas.height) {
-        enemy.velocity.y = -20
         keys.ArrowUp.pressed = true
+        enemy.velocity.y = -20
       }
       break
      case 'ArrowDown':
@@ -170,13 +183,20 @@ function handleMovement() {
 	// Player movement
   if (keys.a.pressed) {
     player.velocity.x = -10
-    player.image = player.sprites.run.image
+    player.switchSprite('run')
   } else if (keys.d.pressed) {
     player.velocity.x = 10
-    player.image = player.sprites.run.image
+    player.switchSprite('run')
   } else {
     player.velocity.x = 0
-    player.image = player.sprites.idle.image
+    player.switchSprite('idle')
+  }
+
+  // Jumping
+  if (keys.w.pressed && player.position.y >= (groundHeight - player.height)) {
+  	player.switchSprite('jump')
+  } else if (player.velocity.y > 0) {
+  	player.switchSprite('fall')
   }
 
   // Enemy movement
@@ -205,7 +225,6 @@ function animate() {
 
 	// Draw the shop sprite
 	shop.update()
-
 
 	// Update and draw the player and enemy sprites
 	player.update()
