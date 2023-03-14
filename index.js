@@ -84,6 +84,10 @@ const player = new Fighter({
 		takeHit: {
 			imageSrc: './img/kenshin/Take Hit - white silhouette.png',
       framesMax: 4
+		},
+		death: {
+			imageSrc: './img/kenshin/Death.png',
+      framesMax: 6
 		}
 	},
 	attackBox: {
@@ -146,6 +150,10 @@ const enemy = new Fighter({
 		takeHit: {
 			imageSrc: './img/kenji/Take hit.png',
 			framesMax: 3
+		},
+		death: {
+			imageSrc: './img/kenji/Death.png',
+      framesMax: 7
 		}
 	},
 	attackBox: {
@@ -181,8 +189,9 @@ const keys = {
 }
 
 window.addEventListener('keydown', (event) => {
-  // console.log(event.key)
-  switch (event.key) {
+  // Controller for Player
+  if (!player.dead) {
+	  switch (event.key) {
     case 'd':
       keys.d.pressed = true
       player.lastKey = 'd'
@@ -201,6 +210,12 @@ window.addEventListener('keydown', (event) => {
     case 's':
     	player.attack()
     	break
+  	}
+  }
+
+  // Controller for Enemy
+  if (!enemy.dead) {
+  	switch (event.key) {
     case 'ArrowRight':
       keys.ArrowRight.pressed = true
       enemy.lastKey = 'ArrowRight'
@@ -218,6 +233,7 @@ window.addEventListener('keydown', (event) => {
     case 'ArrowDown':
      	enemy.attack()
      	break
+  	}
   }
 })
 
