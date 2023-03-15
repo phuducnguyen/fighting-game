@@ -22,4 +22,7 @@
 - Interface Design and Animation
 - Pushing Live
 
+[GAME] https://mewteck-fighting-game.netlify.app/
+Active till: 14/06/2023
+
 Last but not least, Great stuff! @chriscourses
